@@ -12,8 +12,8 @@ FBXHeaderExtension:  {
 		Month: 10
 		Day: 03
 		Hour: 10
-		Minute: 01
-		Second: 19
+		Minute: 26
+		Second: 42
 		Millisecond: 0
 	}
 	Creator: "FBX SDK/FBX Plugins build 20070228"
@@ -21,7 +21,7 @@ FBXHeaderExtension:  {
 		FlagPLE: 0
 	}
 }
-CreationTime: "2011-10-03 10:01:19:000"
+CreationTime: "2011-10-03 10:26:42:000"
 Creator: "Blender version 2.59 (sub 0)"
 
 ; Object definitions
@@ -142,7 +142,7 @@ Objects:  {
 		CameraName: 100
 		CameraIndexName:
 	}
-	Model: "Model::Cube", "Mesh" {
+	Model: "Model::Thrust", "Mesh" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -3891,7 +3891,7 @@ Objects:  {
 		}
 		NbPoseNodes: 4
 		PoseNode:  {
-			Node: "Model::Cube"
+			Node: "Model::Thrust"
 			Matrix: 1.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,-1.000000000000000,0.000000000000000,0.000000000000000,1.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,1.000000000000000
 		}
 		PoseNode:  {
@@ -3925,7 +3925,7 @@ Objects:  {
 ;------------------------------------------------------------------
 
 Relations:  {
-	Model: "Model::Cube", "Mesh" {
+	Model: "Model::Thrust", "Mesh" {
 	}
 	Model: "Model::Turret", "Mesh" {
 	}
@@ -3975,16 +3975,16 @@ Relations:  {
 ;------------------------------------------------------------------
 
 Connections:  {
-	Connect: "OO", "Model::Cube", "Model::Scene"
+	Connect: "OO", "Model::Thrust", "Model::Scene"
 	Connect: "OO", "Model::Turret", "Model::Scene"
 	Connect: "OO", "Model::Weapon", "Model::Scene"
 	Connect: "OO", "Model::Corvette", "Model::Scene"
-	Connect: "OO", "Material::None__corvette_thrust_png", "Model::Cube"
+	Connect: "OO", "Material::None__corvette_thrust_png", "Model::Thrust"
 	Connect: "OO", "Material::unnamed", "Model::Turret"
 	Connect: "OO", "Material::unnamed", "Model::Weapon"
 	Connect: "OO", "Material::None__weapon", "Model::Weapon"
 	Connect: "OO", "Material::Material__corvette_png", "Model::Corvette"
-	Connect: "OO", "Texture::corvette_thrust_png", "Model::Cube"
+	Connect: "OO", "Texture::corvette_thrust_png", "Model::Thrust"
 	Connect: "OO", "Texture::weapon", "Model::Weapon"
 	Connect: "OO", "Texture::corvette_png", "Model::Corvette"
 	Connect: "OO", "Video::corvette_png", "Texture::corvette_png"
