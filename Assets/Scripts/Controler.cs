@@ -48,6 +48,14 @@ public class Controler : MonoBehaviour {
 		/* Gestion du Yaw */
 		float yaw = Input.GetAxis("Yaw");
 		rigidbody.AddTorque(yaw * transform.up);
+		
+		
+		/* Surement pas le bon endroit: */
+		if (Input.GetButton("Quit")) {
+			print("EXIT!");
+			Application.Quit();
+		}
+		
 	}
 	
 	void OnGUI () {
