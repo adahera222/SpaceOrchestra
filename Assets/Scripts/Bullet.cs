@@ -5,6 +5,7 @@ public class Bullet : MonoBehaviour {
 	
 	public float force = 0.0f;
 	public float duration = 5.0f; /* Durée de vie de la munition, en secondes */
+	public float collision_distance = 0.5f; /* Distance à laquelle on condidère qu'il y a impact */
 	public GameObject explosion;
 	
 	private float age = 0.0f;
@@ -22,15 +23,16 @@ public class Bullet : MonoBehaviour {
 		/* On la détruit si elle est trop vieille */
 		if(age >= duration)
 			Destroy (gameObject);
+		
+		/* Vérification des collisions */
+		RaycastHit hit;
+		if(Physics.Raycast(transform.position, transform.up,out hit)) {
+			if(Vector3.Distance(hit.point, transform.position) < collision_distance) {
+				GameObject target = hit.collider.gameObject;
+				Instantiate(explosion, hit.point, transform.rotation);
+				target.SendMessage("OnImpact",25);
+				Destroy(gameObject);
+			}
+		}
 	}
-	/*
-	void OnCollisionEnter(Collision collision) {
-    	// Rotate the object so that the y-axis faces along the normal of the surface
-	    ContactPoint contact = collision.contacts[0];
-	    Vector3 pos = contact.point;
-	    Instantiate(explosion, pos, transform.rotation);
-		GameObject target = collision.collider.gameObject;
-		target.SendMessage("OnImpact",25);
-		Destroy(gameObject);
-	}*/
 }
