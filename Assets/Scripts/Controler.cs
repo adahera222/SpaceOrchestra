@@ -9,6 +9,7 @@ public class Controler : MonoBehaviour {
 	public float vitesse_min = -1.0f;
 	
 	public GameObject explosion;
+	public AudioSource engine;
 	
 	// Use this for initialization
 	void Start () {
@@ -30,6 +31,9 @@ public class Controler : MonoBehaviour {
 			consigne_vitesse = vitesse_max;
 		if(consigne_vitesse < vitesse_min)
 			consigne_vitesse = vitesse_min;
+		
+		/* Reglage du pitch du son en fonction de la consigne vitesse */
+		engine.pitch = 1+ consigne_vitesse*(2/vitesse_max);
 		
 		rigidbody.AddForce(consigne_vitesse * transform.forward);
 		

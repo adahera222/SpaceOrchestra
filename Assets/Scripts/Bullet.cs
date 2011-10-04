@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour {
 		if(age >= duration)
 			Destroy (gameObject);
 	}
-	
+	/*
 	void OnCollisionEnter(Collision collision) {
     	// Rotate the object so that the y-axis faces along the normal of the surface
 	    ContactPoint contact = collision.contacts[0];
@@ -32,5 +32,5 @@ public class Bullet : MonoBehaviour {
 		GameObject target = collision.collider.gameObject;
 		target.SendMessage("OnImpact",25);
 		Destroy(gameObject);
-	}
+	}*/
 }
