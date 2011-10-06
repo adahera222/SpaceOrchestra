@@ -18,7 +18,7 @@ public class Controler : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 	
 		
 		/* Gestion de l'accélération */
