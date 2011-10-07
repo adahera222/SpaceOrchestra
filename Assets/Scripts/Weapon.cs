@@ -5,15 +5,18 @@ public class Weapon : MonoBehaviour {
 
 	public GameObject bullet;
 	public float fire_rate = 0.5f; /* En secondes */
-	public float force = 0.0f;
+	public float force = 0.0f;	
 	
 	private bool can_fire;
 	private float time_elapsed;
+	
+	private Transform root;
 		
 	// Use this for initialization
 	void Start () {
 		can_fire = true;
 		time_elapsed = 0.0f;
+		root = transform.root;
 	}
 	
 	public bool CanFire() {
@@ -26,7 +29,7 @@ public class Weapon : MonoBehaviour {
 		
 		GameObject clone = (GameObject)Instantiate(bullet, transform.position, transform.rotation);
 		Vector3 vect = new Vector3(0,0,0);
-		Vector3 velocity = rigidbody.GetRelativePointVelocity(vect);
+		Vector3 velocity = root.rigidbody.GetRelativePointVelocity(vect);
 		
 		clone.rigidbody.velocity = velocity;
 		clone.rigidbody.AddForce(transform.up * force);
