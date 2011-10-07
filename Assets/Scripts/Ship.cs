@@ -4,14 +4,10 @@ using System.Collections;
 public class Ship : MonoBehaviour {
 	
 	/* Private */
-	private float desired_speed = 0.0f;
-	private float current_speed = 0.0f;
-	private float current_hull;
-	private float current_energy;
-	
-	private float pitch;
-	private float roll;
-	private float yaw;
+	private float pitch = 0;
+	private float roll = 0;
+	private float yaw = 0;
+	private float desired_speed = 0;
 	
 	private Material shield_material;
 	private float shield_timer;
@@ -19,6 +15,8 @@ public class Ship : MonoBehaviour {
 	
 	
 	/* Public */
+	public float current_hull;
+	public float current_energy;
 	public float max_speed = 27.0f;
 	public float min_speed = -1.0f;
 	public float max_energy = 100.0f;
@@ -27,9 +25,6 @@ public class Ship : MonoBehaviour {
 	
 	public GameObject explosion;
 	public AudioSource engine;
-	
-	public int nb_in_team;
-	public bool friend;
 	
 	// Use this for initialization
 	void Start () {
@@ -74,26 +69,14 @@ public class Ship : MonoBehaviour {
 	}
 	
 	
-	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		
 		/* Récupération de l'énergie */
 		current_energy += eps * Time.deltaTime;
 		if(current_energy > max_energy) {
 			current_energy = max_energy;
 		}
-		
-		/* Cette partie devrait se trouver dans le script ship controler */
-		float acceleration = Input.GetAxis("SpeedControl");
-	
-		current_speed = rigidbody.velocity.magnitude;
-		desired_speed += acceleration*0.1f;
-		
-		setDesiredSpeed(desired_speed);
-		setPitch(Input.GetAxis("Pitch"));
-		setRoll(Input.GetAxis("Roll"));
-		setYaw(Input.GetAxis("Yaw"));
 
 		rigidbody.AddForce(desired_speed * transform.forward);
 		rigidbody.AddTorque(pitch * transform.right);
@@ -101,13 +84,9 @@ public class Ship : MonoBehaviour {
 		rigidbody.AddTorque(yaw * transform.up);
 		
 		/* Reglage du pitch du son en fonction de la consigne vitesse */
+		float current_speed = rigidbody.velocity.magnitude;
 		engine.pitch = 1+ current_speed*(2/max_speed);
 		
-		/* Surement pas le bon endroit: */
-		if (Input.GetButton("Quit")) {
-			print("EXIT!");
-			Application.Quit();
-		}
 		
 		if(shield_activated) {
 			Color col = Color.white;			
@@ -127,17 +106,6 @@ public class Ship : MonoBehaviour {
 			shield_material.SetColor("_TintColor", col);
 		}
 	}
-	
-	void OnGUI () {
-		int x_offset = friend ? 0:300;
-		int y_offset = nb_in_team * 100;
-		GUI.Box (new Rect (  x_offset + 20, y_offset + 20,200,80), "");
-		GUI.Label (new Rect (x_offset + 25, y_offset + 25, 200, 30), "Consigne vitesse:" + ((int)(desired_speed*3.6f)).ToString() + "km/h" );
-		GUI.Label (new Rect (x_offset + 25, y_offset + 40, 200, 30), "Vitesse courante:" + ((int)(current_speed*3.6f)).ToString() + "km/h" );
-		GUI.Label (new Rect (x_offset + 25, y_offset + 55, 200, 30), "Hull:" + ((int)(current_hull)).ToString()+"/"+((int)(max_hull)).ToString());
-		GUI.Label (new Rect (x_offset + 25, y_offset + 70, 200, 30), "Energy:" + ((int)(current_energy)).ToString()+"/"+((int)(max_energy)).ToString());
-	}
-	
 		
 	void OnImpact(int damage) {
 		current_energy -= (float)damage;

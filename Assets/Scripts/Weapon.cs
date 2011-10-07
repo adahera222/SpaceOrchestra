@@ -15,14 +15,19 @@ public class Weapon : MonoBehaviour {
 		time_elapsed = 0.0f;
 	}
 	
-	void FireOneShot() {
+	public bool CanFire() {
+		return can_fire;
+	}
+	
+	public void FireOneShot() {
+		can_fire = false;
+		time_elapsed = 0.0f;
+		
 		GameObject clone = (GameObject)Instantiate(bullet, transform.position, transform.rotation);
 		Vector3 vect = new Vector3(0,0,0);
 		Vector3 velocity = rigidbody.GetRelativePointVelocity(vect);
-	
 		
 		clone.rigidbody.velocity = velocity;
-		
 		
 		audio.Play();
 	}
@@ -38,17 +43,5 @@ public class Weapon : MonoBehaviour {
 				can_fire = true;	
 			}
 		}
-		else if (Input.GetButton("Fire 1")) {
-			/* Si on peut tirer et qu'on appuie sur le boutton, 
-			 * alors on interdit de tirer et réinitialise le compteur...
-			 * ...(et on tire)
-			 */
-			can_fire = false;
-			time_elapsed = 0.0f;
-			
-			FireOneShot();
-	    }
-	
-	
 	}
 }
