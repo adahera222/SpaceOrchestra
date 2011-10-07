@@ -15,6 +15,8 @@ public class Ship : MonoBehaviour {
 	
 	
 	/* Public */
+	public bool is_controled;
+	
 	public float current_hull;
 	public float current_energy;
 	public float max_speed = 27.0f;
@@ -25,6 +27,8 @@ public class Ship : MonoBehaviour {
 	
 	public GameObject explosion;
 	public AudioSource engine;
+	
+	public Weapon[] weapon_slots;
 	
 	// Use this for initialization
 	void Start () {
@@ -68,6 +72,11 @@ public class Ship : MonoBehaviour {
 		this.yaw = yaw;
 	}
 	
+	public void Fire(int slot_nb) {
+		if(weapon_slots[slot_nb].CanFire()) {
+			weapon_slots[slot_nb].FireOneShot();
+		}
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {

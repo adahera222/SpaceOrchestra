@@ -5,8 +5,7 @@ public class Controler : MonoBehaviour {
 	
 	public float desired_speed = 0.0f;
 	public float current_speed = 0.0f;
-	
-	public Weapon weapon;
+
 	public Ship ship;
 	
 	// Use this for initialization
@@ -38,8 +37,9 @@ public class Controler : MonoBehaviour {
 		ship.setYaw(Input.GetAxis("Yaw"));
 		
 		// Gestion des tirs
-		if (Input.GetButton("Fire 1") && weapon.CanFire()) {
-			weapon.FireOneShot();
+		if (Input.GetButton("Fire 1")) {
+			ship.Fire(0);
+			ship.Fire(1);
 	    }
 		
 		/* Surement pas le bon endroit: */
@@ -50,7 +50,7 @@ public class Controler : MonoBehaviour {
 	}
 	
 	void OnGUI () {
-		GUI.Box (new Rect (20,20,200,60), "");
+		GUI.Box (new Rect (20,20,200,70), "");
 		GUI.Label (new Rect (25, 25, 200, 30), "Consigne vitesse:" + ((int)(desired_speed*3.6f)).ToString() + "km/h" );
 		GUI.Label (new Rect (25, 40, 200, 30), "Vitesse courante:" + ((int)(ship.rigidbody.velocity.magnitude*3.6f)).ToString() + "km/h" );
 		GUI.Label (new Rect (25, 55, 200, 30), "Hull:" + ((int)(ship.current_hull)).ToString()+"/"+((int)(ship.max_hull)).ToString());
