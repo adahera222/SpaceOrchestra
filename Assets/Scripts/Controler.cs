@@ -12,7 +12,10 @@ public class Controler : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Screen.showCursor = false;
-		Screen.lockCursor = true;
+		Screen.lockCursor = true; 
+		
+		ship.transform.Find("Camera").gameObject.SetActiveRecursively(true);
+	
 	}
 	
 	// Update is called once per frame
@@ -41,7 +44,6 @@ public class Controler : MonoBehaviour {
 		
 		/* Surement pas le bon endroit: */
 		if (Input.GetButton("Quit")) {
-			print("EXIT!");
 			Application.Quit();
 		}
 		
