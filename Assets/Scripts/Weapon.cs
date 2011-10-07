@@ -5,6 +5,7 @@ public class Weapon : MonoBehaviour {
 
 	public GameObject bullet;
 	public float fire_rate = 0.5f; /* En secondes */
+	public float force = 0.0f;
 	
 	private bool can_fire;
 	private float time_elapsed;
@@ -28,6 +29,7 @@ public class Weapon : MonoBehaviour {
 		Vector3 velocity = rigidbody.GetRelativePointVelocity(vect);
 		
 		clone.rigidbody.velocity = velocity;
+		clone.rigidbody.AddForce(transform.up * force);
 		
 		audio.Play();
 	}
