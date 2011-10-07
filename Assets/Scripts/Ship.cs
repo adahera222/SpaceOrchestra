@@ -13,6 +13,10 @@ public class Ship : MonoBehaviour {
 	private float roll;
 	private float yaw;
 	
+	private Material shield_material;
+	private float shield_timer;
+	private bool shield_activated;
+	
 	
 	/* Public */
 	public float max_speed = 27.0f;
@@ -24,9 +28,29 @@ public class Ship : MonoBehaviour {
 	public GameObject explosion;
 	public AudioSource engine;
 	
+	public int nb_in_team;
+	public bool friend;
+	
 	// Use this for initialization
 	void Start () {
-	
+		Transform shield = transform.Find("Shield");
+		if(shield != null) {
+			MeshRenderer shield_renderer = shield.gameObject.GetComponent<MeshRenderer>();
+			shield_material = shield_renderer.material;
+		} else {
+			shield_material = null;
+		}
+		shield_activated = false;
+		shield_timer = 0;
+
+		if(shield_material != null) {
+			Color col = Color.white;
+			col.a = 0;
+			shield_material.SetColor("_TintColor", col);
+		}
+		
+		current_hull = max_hull;
+		current_energy = max_energy;
 	}
 	
 	public void setDesiredSpeed(float speed) {
@@ -56,8 +80,9 @@ public class Ship : MonoBehaviour {
 		
 		/* Récupération de l'énergie */
 		current_energy += eps * Time.deltaTime;
-		if(current_energy > max_energy)
-			current_hull = max_energy;
+		if(current_energy > max_energy) {
+			current_energy = max_energy;
+		}
 		
 		/* Cette partie devrait se trouver dans le script ship controler */
 		float acceleration = Input.GetAxis("SpeedControl");
@@ -83,22 +108,46 @@ public class Ship : MonoBehaviour {
 			print("EXIT!");
 			Application.Quit();
 		}
+		
+		if(shield_activated) {
+			Color col = Color.white;			
+			shield_timer -= Time.deltaTime;
+			
+			if(shield_timer > 0) {
+				if(shield_timer > 0.7f) {
+					col.a = 10 * (1-shield_timer);
+				} else {
+					col.a = shield_timer / 0.7f;
+				}
+			} else {
+				shield_timer = 0;
+				shield_activated = false;
+				col.a = 0;
+			}
+			shield_material.SetColor("_TintColor", col);
+		}
 	}
 	
 	void OnGUI () {
-		GUI.Box (new Rect (20,20,200,80), "");
-		GUI.Label (new Rect (25, 25, 200, 30), "Consigne vitesse:" + ((int)(desired_speed*3.6f)).ToString() + "km/h" );
-		GUI.Label (new Rect (25, 40, 200, 30), "Vitesse courante:" + ((int)(current_speed*3.6f)).ToString() + "km/h" );
-		GUI.Label (new Rect (25, 55, 200, 30), "Hull:" + ((int)(current_hull)).ToString());
-		GUI.Label (new Rect (25, 70, 200, 30), "Energy:" + ((int)(current_hull)).ToString());
+		int x_offset = friend ? 0:300;
+		int y_offset = nb_in_team * 100;
+		GUI.Box (new Rect (  x_offset + 20, y_offset + 20,200,80), "");
+		GUI.Label (new Rect (x_offset + 25, y_offset + 25, 200, 30), "Consigne vitesse:" + ((int)(desired_speed*3.6f)).ToString() + "km/h" );
+		GUI.Label (new Rect (x_offset + 25, y_offset + 40, 200, 30), "Vitesse courante:" + ((int)(current_speed*3.6f)).ToString() + "km/h" );
+		GUI.Label (new Rect (x_offset + 25, y_offset + 55, 200, 30), "Hull:" + ((int)(current_hull)).ToString()+"/"+((int)(max_hull)).ToString());
+		GUI.Label (new Rect (x_offset + 25, y_offset + 70, 200, 30), "Energy:" + ((int)(current_energy)).ToString()+"/"+((int)(max_energy)).ToString());
 	}
 	
 		
 	void OnImpact(int damage) {
 		current_energy -= (float)damage;
+		
 		if(current_energy <= 0.0f) {
 			current_hull += current_energy;
 			current_energy = 0.0f;
+		} else {
+			shield_activated = true;
+			shield_timer = 1;
 		}
 		if(current_hull <= 0.0f) {	
 	    	Instantiate(explosion, transform.position, transform.rotation);
