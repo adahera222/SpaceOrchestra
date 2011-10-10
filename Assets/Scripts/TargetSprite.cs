@@ -14,6 +14,7 @@ public class TargetSprite : MonoBehaviour {
 	
 	Camera cam ;
 	GUITexture texture;
+	GUIText distance_label;
 
     void Start () 
     {
@@ -23,6 +24,7 @@ public class TargetSprite : MonoBehaviour {
 	        cam = cameraToUse;
 		
 		texture = (GUITexture) transform.GetComponent("GUITexture");
+		distance_label =  (GUIText)transform.GetComponent("GUIText");
     }
 	
 	public void setTarget(Ship target) {
@@ -45,6 +47,8 @@ public class TargetSprite : MonoBehaviour {
 		transform.position = new Vector3(Mathf.Clamp(transform.position.x, clampBorderSize, 1.0f - clampBorderSize),
 		                         Mathf.Clamp(transform.position.y, clampBorderSize, 1.0f - clampBorderSize),
 		                         transform.position.z);
+		
+		distance_label.text =((int) Vector3.Distance(target.transform.position, cam.transform.position)).ToString() + "m";
 		
 		transform.Rotate(0.0f,10.0f,10.0f);
     }
