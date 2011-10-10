@@ -130,5 +130,9 @@ public class Ship : MonoBehaviour {
 	    	Instantiate(explosion, transform.position, transform.rotation);
 			Destroy(gameObject);
 		}
+	}	
+		
+	void OnCollisionEnter(Collision col) {
+		OnImpact((int)(col.impactForceSum.magnitude * 10));
 	}
 }

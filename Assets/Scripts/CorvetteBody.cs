@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CorvetteBody : MonoBehaviour {
 	
-	public GameObject controller;
+	public GameObject ship;
 	
 	// Use this for initialization
 	void Start () {
@@ -16,6 +16,6 @@ public class CorvetteBody : MonoBehaviour {
 	}
 	
 	void OnImpact(int damage) {
-		controller.SendMessage("OnImpact",damage);
+		ship.SendMessage("OnImpact",damage);
 	}
 }
