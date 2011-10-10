@@ -26,6 +26,8 @@ public class Missile : MonoBehaviour {
 		
 		previous_angle = 0.0f;
 		integrale = 0.0f;
+		Controler ctrl=(Controler) GameObject.Find("Controler").GetComponent("Controler");
+		target = ctrl.target.transform;
 	
 	}
 
@@ -33,6 +35,7 @@ public class Missile : MonoBehaviour {
 	void Update () {
 		
 		/* Tentative d'asservissement PID */
+		/*
 		float dt = Time.deltaTime;
 
 		Vector3 targetDelta = target.position - transform.position;
@@ -45,8 +48,9 @@ public class Missile : MonoBehaviour {
 			integrale = integrale + delta_angle*dt;
 		}
 		float commande = Ap*delta_angle + Ai*integrale + Ad*derivee;
-		
+		*/
 		/* Saturation */
+		/*
 		if(delta_angle > max_angle) {
 			delta_angle = max_angle;	
 		}
@@ -56,6 +60,12 @@ public class Missile : MonoBehaviour {
 		
 		rigidbody.AddForce(transform.forward * max_thrust);
 		rigidbody.AddTorque(cross * commande);
+		*/
+
+
+		transform.LookAt(target);
+
+		rigidbody.AddForce(transform.forward * max_thrust);
 		
 		/* Vérification des collisions */
 		RaycastHit hit;
@@ -63,7 +73,7 @@ public class Missile : MonoBehaviour {
 			if(Vector3.Distance(hit.point, transform.position) < collision_distance) {
 				GameObject impact = hit.collider.gameObject;
 				Instantiate(explosion, hit.point, transform.rotation);
-				impact.SendMessage("OnImpact",100);
+				impact.SendMessage("OnImpact",80);
 				Destroy(gameObject);
 			}
 		}
